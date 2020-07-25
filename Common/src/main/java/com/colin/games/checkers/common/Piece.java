@@ -16,6 +16,21 @@ public class Piece {
         return color;
     }
     public enum Color{
-        BROWN,WHITE
+        BROWN(){
+            @Override
+            public String toString() {
+                return "B";
+            }
+        },WHITE(){
+            @Override
+            public String toString() {
+                return "W";
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return color.toString() + (isKing ? "K" : "");
     }
 }

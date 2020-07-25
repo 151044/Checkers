@@ -45,6 +45,6 @@ public class Tile {
 
     @Override
     public String toString() {
-        return p.getX() + " " + p.getY() + (piece.isEmpty() ? "N" : piece.map(Object::toString));
+        return "(" + p.getX() + "," + p.getY() + ")" + (piece.isEmpty() ? "N" : piece.get().toString());
     }
 }
