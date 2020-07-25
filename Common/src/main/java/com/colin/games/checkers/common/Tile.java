@@ -42,4 +42,9 @@ public class Tile {
     public Point getLocation(){
         return p;
     }
+
+    @Override
+    public String toString() {
+        return p.getX() + " " + p.getY() + (piece.isEmpty() ? "N" : piece.map(Object::toString));
+    }
 }
