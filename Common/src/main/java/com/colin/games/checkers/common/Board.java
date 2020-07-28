@@ -151,4 +151,7 @@ public class Board {
     public Board copy(){
         return new Board(tiles);
     }
+    public List<Tile> piecesOf(Piece.Color c){
+        return tiles.stream().flatMap(list -> list.stream()).filter(t -> !t.isEmpty() && t.get().getColor().equals(c)).collect(Collectors.toList());
+    }
 }

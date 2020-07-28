@@ -1,6 +1,7 @@
 package com.colin.games.checkers.common;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Tile {
