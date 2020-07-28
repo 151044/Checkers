@@ -20,5 +20,13 @@ public class BoardTest {
         System.out.println(board.allMoves(new Point(0,2), Piece.Color.BROWN,false));
         System.out.println(board.allMoves(new Point(0,2), Piece.Color.BROWN,true));
         System.out.println(board.gridDump());
+        System.out.println(board.bestMove(new Point(0,2),Piece.Color.BROWN,true));
+        System.out.println(board.bestMove(new Point(0,2),Piece.Color.BROWN,false));
+        board.removePieceAt(new Point(2,6));
+        System.out.println(board.gridDump());
+        System.out.println(board.allMoves(new Point(2,2),Piece.Color.BROWN,false));
+        System.out.println(board.bestMove(new Point(2,2), Piece.Color.BROWN,false));
+        System.out.println(board.allMoves(new Point(2,2),Piece.Color.BROWN,true));
+        System.out.println(board.bestMove(new Point(2,2), Piece.Color.BROWN,true));
     }
 }

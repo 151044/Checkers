@@ -1,8 +1,6 @@
 package com.colin.games.checkers.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
@@ -88,7 +86,7 @@ public class Board {
     private List<Tile> actualJumpSquares(Point p, Piece.Color c,boolean isKing){
         List<Tile> ans = new ArrayList<>();
         for(Tile t : jumpSquares(p)){
-            Tile mid = getTileAt(p.move((int) Math.round((t.getLocation().getX() - p.getX()) / 2.0),(int) Math.round((t.getLocation().getY() - p.getY()) / 2.0)));
+            Tile mid = getTileAt(p.midPoint(t.getLocation()));
             if(!mid.isEmpty() && t.isEmpty() && !c.equals(mid.get().getColor())){
                 if(c.equals(Piece.Color.BROWN)){
                     if(t.getLocation().getY() - p.getY() > 0 || isKing){
@@ -111,23 +109,29 @@ public class Board {
     public List<Tile> allMoves(Point p, Piece.Color c,boolean isKing){
         return recurse(p,c,true,isKing,p,copy());
     }
+    public Tile bestMove(Point p, Piece.Color c, boolean isKing){
+        Map<Tile,Double> map = recurse(p,c,true,isKing,p,copy(),0.0,new HashMap<>());
+        return map.entrySet().stream().max(Comparator.comparingDouble(Map.Entry::getValue)).map(ent -> ent.getKey()).orElse(getTileAt(p));
+    }
     private List<Tile> recurse(Point p, Piece.Color c, boolean isFirst,boolean isKing,Point prev,Board copy){
+        return new ArrayList<>(recurse(p, c, isFirst, isKing, prev, copy,0.0,new HashMap<>()).keySet());
+    }
+    private Map<Tile,Double> recurse(Point p, Piece.Color c, boolean isFirst, boolean isKing, Point prev, Board copy, double curScore, Map<Tile,Double> score){
         List<Tile> add = new ArrayList<>();
         if(!isFirst){
             copy.removePieceAt(p.midPoint(prev));
         }
-        copy.gridDump();
         add.addAll(copy.actualJumpSquares(p,c,isKing));
         if(add.isEmpty()){
-            return List.of(copy.getTileAt(p));
+            return Map.of(getTileAt(p),curScore);
         }else{
-            List<Tile> res = add.stream().flatMap(t -> recurse(t.getLocation(),c,false,isKing,p,copy.copy()).stream()).collect(Collectors.toList());
+            Map<Tile,Double> map = add.stream().flatMap(t -> recurse(t.getLocation(),c,false,isKing,p,copy.copy(),curScore + 2.0,score).entrySet().stream()).collect(Collectors.toMap(ent -> ent.getKey(),ent -> ent.getValue()));
             if(!isFirst) {
-                res.add(copy.getTileAt(p));
+                map.put(copy.getTileAt(p),curScore);
             }else{
-                res.addAll(copy.actualMoveSquares(p,c,isKing));
+                copy.actualMoveSquares(p,c,isKing).forEach(tile -> map.put(tile,0.5));
             }
-            return res;
+            return map;
         }
     }
     public Optional<Piece> removePieceAt(Point p){
