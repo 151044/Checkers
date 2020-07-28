@@ -39,7 +39,7 @@ public class Tile {
         return ret;
     }
     public Optional<Piece> removeSafely(){
-        Optional<Piece> ret = piece.isEmpty() ? Optional.empty() : Optional.of(piece.get());
+        Optional<Piece> ret = piece.isEmpty() ? Optional.empty() : piece;
         piece = Optional.empty();
         return ret;
     }
