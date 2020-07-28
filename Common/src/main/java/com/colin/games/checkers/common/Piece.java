@@ -1,7 +1,7 @@
 package com.colin.games.checkers.common;
 
 public class Piece {
-    private Color color;
+    private final Color color;
     private boolean isKing = false;
     public Piece(Color toSet){
         color = toSet;

@@ -1,5 +1,7 @@
 package com.colin.games.checkers.common;
 
+import java.util.Objects;
+
 public final class Point {
     private final int x;
     private final int y;
@@ -25,5 +27,27 @@ public final class Point {
     }
     public Point copy(){
         return new Point(x,y);
+    }
+
+    public Point midPoint(Point other){
+        return new Point(x + (int) Math.round((other.x - x) / 2.0), y + (int) Math.round((other.y - y) / 2.0));
+    }
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return x == point.x &&
+                y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

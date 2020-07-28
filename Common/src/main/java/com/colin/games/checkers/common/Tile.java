@@ -14,6 +14,10 @@ public class Tile {
         piece = Optional.of(toSet);
         this.p = p;
     }
+    public Tile(Optional<Piece> toSet, Point p){
+        this.p = p;
+        piece = toSet;
+    }
     public boolean isEmpty(){
         return piece.isEmpty();
     }
